@@ -1,0 +1,490 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Kosugi Maru', sans-serif;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* フェード用のオーバーレイ */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 背景画像の切り替え */
+.cat-eyes-normal {
+    background-image: url('./img/stick.png');
+}
+
+.cat-eyes-excited {
+    background-image: url('./img/circle.png');
+}
+
+.cat-eyes-excited::before {
+    background-image: url('./img/circle.png');
+    opacity: 1;
+}
+
+.cat-eyes-dark {
+    background-image: url('./img/blue.png');
+}
+
+.cat-eyes-dark::before {
+    background-image: url('./img/blue.png');
+    opacity: 1;
+}
+
+/* ドロップゾーン */
+.drop-zone {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.drop-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.8),
+        -2px -2px 4px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+.nyan-highlight {
+    color: #ff3526;
+}
+
+@keyframes gentle-pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: modal-fade-in 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-scale-in {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: linear-gradient(135deg, 
+        rgba(5, 5, 15, 0.98) 0%,
+        rgba(10, 10, 20, 0.98) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 2px solid rgba(0, 255, 200, 0.4);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 700px;
+    height: 65vh;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 
+        0 0 40px rgba(0, 255, 200, 0.4),
+        0 0 80px rgba(0, 255, 200, 0.2),
+        inset 0 0 40px rgba(0, 0, 0, 0.8);
+    animation: modal-scale-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), glowPulse 3s ease-in-out infinite;
+    font-family: 'Courier New', monospace !important;
+    writing-mode: horizontal-tb !important;
+    direction: ltr !important;
+    overflow: hidden;
+}
+
+/* ネオンボーダー（控えめ） */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        rgba(0, 255, 200, 0.6), 
+        rgba(0, 200, 255, 0.6), 
+        rgba(0, 255, 200, 0.6));
+    border-radius: 20px;
+    z-index: -1;
+    animation: rotateBorder 6s linear infinite;
+    filter: blur(2px);
+}
+
+/* スキャンライン（薄く） */
+.modal-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 200, 0.02) 0px,
+        rgba(0, 255, 200, 0.02) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    animation: scanline 10s linear infinite;
+    z-index: 10000;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 40px rgba(0, 255, 200, 0.4),
+            0 0 80px rgba(0, 255, 200, 0.2),
+            inset 0 0 40px rgba(0, 0, 0, 0.8);
+    }
+    50% {
+        box-shadow: 
+            0 0 60px rgba(0, 255, 200, 0.6),
+            0 0 100px rgba(0, 255, 200, 0.3),
+            inset 0 0 40px rgba(0, 0, 0, 0.8);
+    }
+}
+
+@keyframes rotateBorder {
+    0% {
+        filter: blur(2px) hue-rotate(0deg);
+    }
+    100% {
+        filter: blur(2px) hue-rotate(360deg);
+    }
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.modal-content * {
+    font-family: 'M PLUS 1 Code', 'MS Gothic', 'Courier New', monospace !important;
+    writing-mode: horizontal-tb !important;
+    direction: ltr !important;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: rgba(0, 255, 200, 0.6);
+    padding: 4px 8px;
+    font-family: 'Courier New', monospace;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 5px rgba(0, 255, 200, 0.3);
+    z-index: 10001;
+    letter-spacing: 0.1em;
+}
+
+.close-btn:hover {
+    color: rgba(0, 255, 200, 1);
+    text-shadow: 0 0 10px rgba(0, 255, 200, 0.8);
+    transform: scale(1.05);
+}
+
+.modal-title {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 182, 193, 0.6),
+        0 0 30px rgba(255, 105, 180, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    animation: title-glow 3s ease-in-out infinite;
+}
+
+@keyframes title-glow {
+    0%, 100% {
+        text-shadow: 
+            0 0 10px rgba(255, 255, 255, 0.8),
+            0 0 20px rgba(255, 182, 193, 0.6),
+            0 0 30px rgba(255, 105, 180, 0.4);
+    }
+    50% {
+        text-shadow: 
+            0 0 20px rgba(255, 255, 255, 1),
+            0 0 40px rgba(255, 182, 193, 0.8),
+            0 0 60px rgba(255, 105, 180, 0.6),
+            0 0 80px rgba(255, 105, 180, 0.4);
+    }
+}
+
+/* アスキーアートグロー効果 */
+.ascii-art-glow {
+    position: relative;
+    white-space: pre;
+    font-family: 'Courier New', monospace;
+    color: #00ff00;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    overflow: hidden;
+}
+
+.ascii-art-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 255, 0, 0.8) 50%, 
+        transparent 100%);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    animation: scan-line 2s ease-in-out;
+}
+
+@keyframes scan-line {
+    0% {
+        top: 0;
+        left: 0;
+    }
+    100% {
+        top: 100%;
+        left: 100%;
+    }
+}
+
+/* ターミナル風スタイル */
+.terminal {
+    font-family: 'Courier New', 'MS Gothic', monospace;
+}
+
+.terminal-output {
+    color: #00ff00;
+    font-size: 14px;
+    font-family: 'Courier New', 'MS Gothic', monospace;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    min-height: 200px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.terminal-cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background: #00ff00;
+    animation: cursor-blink 1s infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes cursor-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+.terminal-buttons {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.terminal-btn {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 15px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    text-align: left;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.terminal-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    transform: translateX(10px);
+}
+
+/* 仮想スクロール */
+.virtual-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    background: transparent;
+    position: relative;
+    writing-mode: horizontal-tb !important;
+    direction: ltr !important;
+    font-family: 'M PLUS 1 Code', 'MS Gothic', 'Courier New', monospace !important;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    font-smooth: never;
+    text-rendering: optimizeSpeed;
+    color: #00ff00;
+    font-size: 14px;
+    line-height: 1.5;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.scroll-content {
+    writing-mode: horizontal-tb !important;
+    direction: ltr !important;
+    font-family: 'Courier New', 'MS Gothic', monospace !important;
+}
+
+.scroll-text {
+    writing-mode: horizontal-tb !important;
+    direction: ltr !important;
+    white-space: pre-wrap;
+    font-family: 'Courier New', 'MS Gothic', monospace !important;
+    color: #00ff00;
+}
+
+.scroll-content {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-wrap;
+    word-break: break-all;
+    position: relative;
+}
+
+.scroll-spacer {
+    width: 1px;
+}
+
+.scroll-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    will-change: transform;
+}
+
+.loading-indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.5rem;
+    color: #999;
+    animation: walking 1s infinite;
+}
+
+@keyframes walking {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* スクロールバーのカスタマイズ */
+.virtual-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.virtual-scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+/* -------- ヘッダー -------- */
+.header {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  padding: 0;
+  z-index: 100;
+}
+
+.header-logo {
+  height: 30px;
+  width: auto;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}

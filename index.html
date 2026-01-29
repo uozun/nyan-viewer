@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>にゃんビューワ</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=M+PLUS+1+Code:wght@400&display=swap" rel="stylesheet">
+</head>
+<body class="cat-eyes-normal">
+    <!-- ヘッダー -->
+    <header class="header">
+        <img src="nyan-code-logo-viewer.png" alt="NYAN CODE" class="header-logo">
+    </header>
+
+    <!-- ドロップゾーン -->
+    <div id="dropZone" class="drop-zone">
+        <p class="drop-hint">DROP <span class="nyan-highlight">.NYAN</span> FILE TO VIEW</p>
+    </div>
+
+    <!-- モーダル -->
+    <div id="modal" class="modal">
+        <div class="modal-content terminal">
+            <button id="closeBtn" class="close-btn">exit</button>
+            <div id="terminalOutput" class="terminal-output"></div>
+            <div id="terminalButtons" class="terminal-buttons" style="display:none;">
+                <button id="quickViewBtn" class="terminal-btn">1. Quick view (first 1000 lines)</button>
+                <button id="fullLoadBtn" class="terminal-btn">2. Full load (may take time)</button>
+            </div>
+            <div id="virtualScroll" class="virtual-scroll" style="display:none;">
+                <div id="scrollContent" class="scroll-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script_v2.js"></script>
+</body>
+</html>
